@@ -1,0 +1,2 @@
+class CommanderAnt:
+    pass
