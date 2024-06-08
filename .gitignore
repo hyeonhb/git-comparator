@@ -1,2 +1,5 @@
 # __pycache__ 디렉토리 제외
 __pycache__/
+
+# .idea 디렉토리 제외
+.idea/
