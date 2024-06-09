@@ -1,5 +1,7 @@
+from Vector3D import Vector3D
+
 class ISwarm:
-    def __init__(self,position, orientation):
+    def __init__(self,position=Vector3D(0.0, 0.0, 0.0), orientation=Vector3D(0.0, 0.0, 0.0)):
         self.position = position
         self.orientation = orientation
 
