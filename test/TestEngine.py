@@ -21,18 +21,18 @@ if __name__ == '__main__':
 
     engine.start()
 
-    robot1.start()
+    robot1.enable()
     time.sleep(3)
-    robot1.stop()
+    robot1.disable()
 
     time.sleep(2)
 
-    robot2.start()
+    robot2.enable()
     time.sleep(1)
     engine.pause()
     time.sleep(3)
     engine.play()
     time.sleep(1)
-    robot2.stop()
+    robot2.disable()
 
     engine.stop()

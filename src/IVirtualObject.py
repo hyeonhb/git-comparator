@@ -8,14 +8,14 @@ class IVirtualObject:
         self.name = name
         pass
 
-    def start(self):
+    def enable(self):
         self.engine.register_object(self)
         pass
 
     def update(self):
         pass
 
-    def stop(self):
+    def disable(self):
         self.engine.unregister_object(self)
         pass
     
