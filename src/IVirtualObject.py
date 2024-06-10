@@ -6,16 +6,14 @@ class IVirtualObject:
     def __init__(self, engine, name=""):
         self.engine = engine
         self.name = name
-        pass
+        self.enable() #모든 오브젝트는 생성 시 engine에 등록됨
 
     def enable(self):
         self.engine.register_object(self)
-        pass
 
     def update(self):
         pass
 
     def disable(self):
         self.engine.unregister_object(self)
-        pass
     
