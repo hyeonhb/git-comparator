@@ -1,7 +1,14 @@
+class VirtualObjectConfig:
+    def __init__(self, height=0.0, width=0.0, depth=0.0, tag=""):
+        self.height = height
+        self.width = width
+        self.depth = depth
+        self.tag = tag
 
 class IVirtualObject:
     engine = None
     name = None
+    config = None
 
     def __init__(self, engine, name=""):
         self.engine = engine
