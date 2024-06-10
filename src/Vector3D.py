@@ -19,6 +19,9 @@ class Vector3D:
     def __repr__(self):
         return f"Vector3D({self.x}, {self.y}, {self.z})"
 
+    def __mod__(self, other):
+        return Vector3D(self.x % other, self.y % other, self.z % other)
+
     def lerp(self, other, t):
         if not 0.0 <= t <= 1.0:
             raise ValueError("The interpolation factor t must be between 0.0 and 1.0")
