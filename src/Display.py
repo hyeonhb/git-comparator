@@ -1,3 +1,4 @@
+import math
 import pygame
 import time
 
@@ -25,19 +26,20 @@ class Display:
         try:
             while self.running:
                 for event in pygame.event.get():
-                    start_time = time.time()
                     if event.type == pygame.QUIT:
                         return
+                #start_time = time.time()
                 self.screen.fill((255, 255, 255))
 
                 object_list = self.engine.get_object_list()
                 for object in object_list:
                     image = pygame.transform.scale(self.tag_images[object.config.tag], (object.config.width, object.config.depth))
+                    image = pygame.transform.rotate(image, math.degrees(object.orientation.y))
                     self.screen.blit(image, (object.position.x, object.position.z))
 
                 pygame.display.flip()
                 self.clock.tick(self.fps)
-                print(time.time() - start_time)
+                #print(time.time() - start_time)
         finally:
             pygame.quit()
 
