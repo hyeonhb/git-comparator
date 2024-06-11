@@ -21,6 +21,10 @@ class Swarm(ISwarm):
         return self.swarm_robot_list.copy()
 
     def calculate_swarm_center(self):
+        if not len(self.swarm_robot_list):
+            self.position = Vector3D()
+            return
+
         position_sum = Vector3D()
         for robot in self.swarm_robot_list:
             position_sum = position_sum + robot.position
