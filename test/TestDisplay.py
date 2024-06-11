@@ -8,6 +8,8 @@ from Drone import Drone
 import math
 from Vector3D import Vector3D
 from VirtualSimEngine import VirtualSimEngine
+from Controller import *
+from Swarm import Swarm
 
 if __name__ == '__main__':
     engine = VirtualSimEngine()
@@ -25,7 +27,16 @@ if __name__ == '__main__':
 
     drone3.rotate(Vector3D(0.0, - (math.pi), 0.0))
 
-    display = Display(engine, width=1024, height=768, name="SwamRobot Display")
-    display.start()
+    swarm1 = Swarm()
+    swarm1.add_robot(drone1)
+    swarm1.add_robot(drone2)
+    swarm1.add_robot(drone3)
+
+    root = tk.Tk()
+    app = VirtualSwarmPanel(root, swarm1, engine)
+    root.mainloop()
+
+    #display = Display(engine, width=1024, height=768, name="SwamRobot Display")
+    #display.start()
 
     engine.stop()
