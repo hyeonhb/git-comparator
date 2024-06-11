@@ -13,10 +13,13 @@ class IVirtualObject:
     def __init__(self, engine, name=""):
         self.engine = engine
         self.name = name
+        self.enabled = False
         self.enable() #모든 오브젝트는 생성 시 engine에 등록됨
 
     def enable(self):
-        self.engine.register_object(self)
+        if not self.enabled:
+            self.engine.register_object(self)
+            self.enabled = True
 
     def open(self):
         pass
@@ -28,5 +31,7 @@ class IVirtualObject:
         pass
 
     def disable(self):
-        self.engine.unregister_object(self)
+        if self.enabled:
+            self.engine.unregister_object(self)
+            self.enabled = False
     
