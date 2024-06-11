@@ -17,6 +17,9 @@ class Swarm(ISwarm):
             print("Remove robot")
             self.calculate_swarm_center()
 
+    def get_robot_list(self):
+        return self.swarm_robot_list.copy()
+
     def calculate_swarm_center(self):
         position_sum = Vector3D()
         for robot in self.swarm_robot_list:
