@@ -42,7 +42,9 @@ class VirtualSimEngine:
                 while self.paused:
                     self.condition.wait()
             start_time = time.time()
-            self.update_object()
+            self.open_objects()
+            self.update_objects()
+            self.final_objects()
             elapsed_time = time.time() - start_time
 
             real_sleep_start = time.time()
@@ -53,10 +55,20 @@ class VirtualSimEngine:
 
             self.delta_time = real_sleep_time + elapsed_time
 
-    def update_object(self):
+    def open_objects(self):
+        with self.lock:
+            for object in self.object_list:
+                object.open()
+
+    def update_objects(self):
         with self.lock:
             for object in self.object_list:
                 object.update()
+
+    def final_objects(self):
+        with self.lock:
+            for object in self.object_list:
+                object.final()
 
     def register_object(self, object):
         with self.lock:

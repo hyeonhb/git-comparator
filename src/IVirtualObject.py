@@ -18,7 +18,13 @@ class IVirtualObject:
     def enable(self):
         self.engine.register_object(self)
 
+    def open(self):
+        pass
+
     def update(self):
+        pass
+
+    def final(self):
         pass
 
     def disable(self):
