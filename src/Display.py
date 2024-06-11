@@ -49,8 +49,6 @@ class Display:
             rect = image.get_rect(center = (object.position.x, object.position.z))
             pygame.draw.rect(self.screen, (0, 255, 0), rect, 1)
 
-            self.screen.blit(image, rect.topleft)
-
             #오브젝트의 좌표를 기준으로 Direction Line 그리기
             self.line_length = 20
             x_axis_start = (object.position.x, object.position.z)
@@ -62,6 +60,8 @@ class Display:
             # 회전된 직선 그리기
             self.draw_rotated_line(self.screen, (255, 0, 0), x_axis_start, x_axis_end, -object.orientation.y, center, 2)
             self.draw_rotated_line(self.screen, (0, 0, 255), y_axis_start, y_axis_end, -object.orientation.y, center, 2)
+
+            self.screen.blit(image, rect.topleft)
 
 
     def start(self):
