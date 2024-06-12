@@ -1,5 +1,5 @@
 class ICommander:
-    def __init__(self, swarm_list):
+    def __init__(self, swarm_list=[]):
         self.swarm_list = swarm_list
 
     def add_swarm(self, swarm):
@@ -7,6 +7,9 @@ class ICommander:
 
     def remove_swarm(self, swarm):
         self.swarm_list.remove(swarm)
+
+    def get_swarm_list(self):
+        return self.swarm_list.copy()
 
     def commander_init(self):
         pass
