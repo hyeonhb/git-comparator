@@ -2,6 +2,27 @@ import math
 import pygame
 import time
 
+class Button:
+    def __init__(self, x, y, w, h, text, callback):
+        self.rect = pygame.Rect(x, y, w, h)
+        self.text = text
+        self.callback = callback
+        self.font = pygame.font.Font(None, 36)
+        self.color = (0, 0, 0)
+        self.bg_color = (255, 255, 255)
+
+    def draw(self, screen):
+        pygame.draw.rect(screen, self.bg_color, self.rect)
+        text_surf = self.font.render(self.text, True, self.color)
+        screen.blit(text_surf, (self.rect.x + (self.rect.width - text_surf.get_width()) // 2,
+                                self.rect.y + (self.rect.height - text_surf.get_height()) // 2))
+
+    def is_clicked(self, pos):
+        return self.rect.collidepoint(pos)
+
+    def click(self):
+        self.callback()
+
 class Display:
     def __init__(self, engine, width, height, fps=60, name=""):
         pygame.init()
