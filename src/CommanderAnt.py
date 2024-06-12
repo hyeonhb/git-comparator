@@ -43,9 +43,9 @@ class CommanderAnt(ICommander):
                     if other == current_boid:
                         continue
                     
-                    average_velocity = pygame.Vector2(0, 0)
-                    average_position = pygame.Vector2(0, 0)
-                    average_separation = pygame.Vector2(0, 0)
+                    average_velocity = pygame.Vector3(0, 0, 0)
+                    average_position = pygame.Vector3(0, 0, 0)
+                    average_separation = pygame.Vector3(0, 0, 0)
                     neighbors_counter = 0
 
                     distance = self.get_distance_difference(current_boid, other)
