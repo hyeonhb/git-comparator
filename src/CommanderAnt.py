@@ -29,6 +29,13 @@ class CommanderAnt(ICommander, IVirtualObject):
 
     def commander_start(self):
         print("Start Commander")
+    
+        # 모든 Boid의 velocity를 랜덤 지정
+        for swarm in self.swarm_list:
+            for boid in swarm:
+                random_velocity = Vector3D(random.uniform(-1, 1), 0, random.uniform(-1, 1))
+                boid.move(random_velocity)
+
         self.is_running = True
 
     def commander_play(self):
