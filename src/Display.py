@@ -122,6 +122,11 @@ class Display:
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         return
+                    #버튼 클릭 이벤트
+                    elif event.type == pygame.MOUSEBUTTONDOWN:
+                        if self.switch_view_button.is_clicked(event.pos):
+                            self.switch_view_button.click()
+                
                 #start_time = time.time()
                 self.screen.fill((255, 255, 255))
 
