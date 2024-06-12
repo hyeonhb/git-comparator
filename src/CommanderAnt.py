@@ -106,7 +106,7 @@ class CommanderAnt(ICommander, IVirtualObject):
                 swram_velocity_list.append(next_velocity)
 
                 # 실제 Boid 위치 셋업
-                #current_boid.rotate(next_velocity)
+                current_boid.set_orientation(next_velocity)
                 current_boid.move(next_velocity)
             
             result.append(swram_velocity_list)
