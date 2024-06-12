@@ -25,13 +25,13 @@ class VirtualSwarmRobot(IVirtualObject, SwarmRobot):
 
     def update_orientation(self):
         with self.lock:
-            if self.angular_velocity != 0.0:
+            if self.angular_velocity.x or self.angular_velocity.y or self.angular_velocity.z:
                 self.orientation = self.orientation + (self.angular_velocity * self.engine.delta_time)
                 self.orientation = self.orientation % (2 * math.pi) #방향은 2PI의 주기를 가짐
 
     def update_position(self):
         with self.lock:
-            if self.velocity != 0.0:
+             if self.velocity.x or self.velocity.y or self.velocity.z:
                 self.position = self.position + (self.velocity * self.engine.delta_time)
 
     def update(self):
