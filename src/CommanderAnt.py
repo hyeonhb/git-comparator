@@ -64,10 +64,7 @@ class CommanderAnt(ICommander, IVirtualObject):
         if self.is_running == False:
             return False
 
-        result = []
-
         for swarm in self.swarm_list:
-            swram_velocity_list = []
             robot_list = swarm.get_robot_list()
             for current_boid in robot_list:
                 for other in robot_list:
@@ -102,15 +99,10 @@ class CommanderAnt(ICommander, IVirtualObject):
                 next_velocity += average_position * 0.05
                 next_velocity -= average_separation * 0.12
                 next_velocity.scale_to_length(MAX_VELOCITY)
-                
-                swram_velocity_list.append(next_velocity)
 
                 # 실제 Boid 위치 셋업
                 current_boid.set_orientation(next_velocity)
                 current_boid.move(next_velocity)
-            
-            result.append(swram_velocity_list)
-        return result
 
     def get_distance_difference(self, current_boid, other):
         # 유클리디안 거리 (Euclidean Distance)
