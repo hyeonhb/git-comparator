@@ -35,10 +35,14 @@ class Display:
         self.running = True
         self.engine = engine
 
+        self.view_mode = True # True : Top View,  False : Side View
+
         self.tag_images = {
             'Drone': self.load_image('.\\resource\\free-icon-camera-drone-5524149.png'),
             'RobotCar': self.load_image('.\\resource\\free-icon-camera-drone-5524149.png'),
         }
+
+        self.switch_view_button = Button(50, 20, 100, 50, 'Switch View', self.switch_view)
 
     def load_image(self, image_path):
         return pygame.transform.rotate(pygame.image.load(image_path), 90)
@@ -57,32 +61,59 @@ class Display:
 
         pygame.draw.line(screen, color, rotated_start, rotated_end, width)
 
+    def switch_view(self):
+        self.view_mode = not self.view_mode
+
     def draw(self):
         for object in self.engine.get_object_list():
             #image 그리기
             image = self.tag_images[object.config.tag]
             angle = math.degrees(object.orientation.y)
-            scale_x = object.config.width / image.get_width()
-            scale_y = object.config.depth / image.get_height()
-            scale = (scale_x + scale_y) / 2  # 평균 비율 사용
-            image = pygame.transform.rotozoom(image, angle, scale)
 
-            rect = image.get_rect(center = (object.position.x, object.position.z))
-            pygame.draw.rect(self.screen, (0, 255, 0), rect, 1)
+            #y값에 따라 스케일 조정
+            scale_factor = 1.0015 ** object.position.y
+            
+            if self.view_mode: # Top View
+                scale_x = (object.config.width / image.get_width()) * scale_factor
+                scale_y = (object.config.depth / image.get_height()) * scale_factor
+                scale = (scale_x + scale_y) / 2  # 평균 비율 사용
+                image = pygame.transform.rotozoom(image, angle, scale)
+                rect = image.get_rect(center=(object.position.x, object.position.z))
+                pygame.draw.rect(self.screen, (0, 255, 0), rect, 1)
+                self.screen.blit(image, rect.topleft)
 
-            #오브젝트의 좌표를 기준으로 Direction Line 그리기
-            self.line_length = 20
-            x_axis_start = (object.position.x, object.position.z)
-            x_axis_end = (object.position.x + self.line_length, object.position.z)
-            y_axis_start = (object.position.x, object.position.z)
-            y_axis_end = (object.position.x, object.position.z + self.line_length)
-            center = (object.position.x, object.position.z)
+                # 오브젝트의 좌표를 기준으로 Direction Line 그리기
+                self.line_length = 20
+                x_axis_start = (object.position.x, object.position.z)
+                x_axis_end = (object.position.x + self.line_length, object.position.z)
+                y_axis_start = (object.position.x, object.position.z)
+                y_axis_end = (object.position.x, object.position.z + self.line_length)
+                center = (object.position.x, object.position.z)
 
-            # 회전된 직선 그리기
-            self.draw_rotated_line(self.screen, (255, 0, 0), x_axis_start, x_axis_end, -object.orientation.y, center, 2)
-            self.draw_rotated_line(self.screen, (0, 0, 255), y_axis_start, y_axis_end, -object.orientation.y, center, 2)
+                # 회전된 직선 그리기
+                self.draw_rotated_line(self.screen, (255, 0, 0), x_axis_start, x_axis_end, -object.orientation.y, center, 2)
+                self.draw_rotated_line(self.screen, (0, 0, 255), y_axis_start, y_axis_end, -object.orientation.y, center, 2)
+            
+            else: #Side View                
+                scale_x = (object.config.width / image.get_width())
+                scale_y = (object.config.height / image.get_height())
+                scale = (scale_x + scale_y) / 2  # 평균 비율 사용
+                image = pygame.transform.rotozoom(image, 0, scale)
+                rect = image.get_rect(center=(object.position.x, self.screen_height - object.position.y))
+                pygame.draw.rect(self.screen, (0, 255, 0), rect, 1)
+                self.screen.blit(image, rect.topleft)
 
-            self.screen.blit(image, rect.topleft)
+                # 오브젝트의 좌표를 기준으로 Direction Line 그리기
+                self.line_length = 20
+                x_axis_start = (object.position.x, self.screen_height - object.position.y)
+                x_axis_end = (object.position.x + self.line_length, self.screen_height - object.position.y)
+                y_axis_start = (object.position.x, self.screen_height - object.position.y)
+                y_axis_end = (object.position.x, self.screen_height - object.position.y - self.line_length)
+                center = (object.position.x, self.screen_height - object.position.y)
+
+                # 회전된 직선 그리기
+                self.draw_rotated_line(self.screen, (255, 0, 0), x_axis_start, x_axis_end, 0, center, 2)
+                self.draw_rotated_line(self.screen, (0, 0, 255), y_axis_start, y_axis_end, 0, center, 2)
 
 
     def start(self):
