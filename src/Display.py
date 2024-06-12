@@ -73,7 +73,7 @@ class Display:
             #y값에 따라 스케일 조정
             scale_factor = 1.0015 ** object.position.y
             
-            if self.view_mode: # Top View
+            if self.view_mode: # Top view
                 scale_x = (object.config.width / image.get_width()) * scale_factor
                 scale_y = (object.config.depth / image.get_height()) * scale_factor
                 scale = (scale_x + scale_y) / 2  # 평균 비율 사용
@@ -94,7 +94,7 @@ class Display:
                 self.draw_rotated_line(self.screen, (255, 0, 0), x_axis_start, x_axis_end, -object.orientation.y, center, 2)
                 self.draw_rotated_line(self.screen, (0, 0, 255), y_axis_start, y_axis_end, -object.orientation.y, center, 2)
             
-            else: #Side View                
+            else: #Side view                
                 scale_x = (object.config.width / image.get_width())
                 scale_y = (object.config.height / image.get_height())
                 scale = (scale_x + scale_y) / 2  # 평균 비율 사용
@@ -126,6 +126,7 @@ class Display:
                 self.screen.fill((255, 255, 255))
 
                 self.draw()
+                self.switch_view_button.draw(self.screen)
 
                 pygame.display.flip()
                 self.clock.tick(self.fps)
