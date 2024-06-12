@@ -10,10 +10,11 @@ class IVirtualObject:
     name = None
     config = None
 
-    def __init__(self, engine, name=""):
+    def __init__(self, engine, name="", config=VirtualObjectConfig()):
         self.engine = engine
         self.name = name
         self.enabled = False
+        self.config = config
         self.enable() #모든 오브젝트는 생성 시 engine에 등록됨
 
     def enable(self):

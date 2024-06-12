@@ -101,7 +101,8 @@ class CommanderAnt(ICommander, IVirtualObject):
                 next_velocity.scale_to_length(MAX_VELOCITY)
 
                 # 실제 Boid 위치 셋업
-                current_boid.set_orientation(next_velocity)
+                angle_radians = math.atan2(next_velocity.z, next_velocity.x)  # 라디안 단위의 각도
+                current_boid.set_orientation(angle_radians)
                 current_boid.move(next_velocity)
 
                 self.correct_position(current_boid, next_velocity)

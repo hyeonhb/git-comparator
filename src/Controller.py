@@ -2,6 +2,8 @@ import tkinter as tk
 from Drone import Drone
 from RobotCar import RobotCar
 from Swarm import Swarm
+import time
+from Vector3D import Vector3D
 
 class VirtualRobotPanel:
     def __init__(self, root, robot):
@@ -88,7 +90,7 @@ class VirtualSwarmPanel:
 
     def add_new_drone(self):
         name = "Drone" + str(len(self.swarm.get_robot_list()))
-        self.add_robot_to_swarm(Drone(self.engine, name))
+        self.add_robot_to_swarm(Drone(self.engine, name, Vector3D(500, 0, 500)))
 
     def add_new_rbcar(self):
         name = "RobotCar" + str(len(self.swarm.get_robot_list()))
@@ -201,8 +203,9 @@ class VirtualCommanderPanel:
 
 
 class Controller:
-    def __init__(self, engine, commander_list=[]):
+    def __init__(self, engine, display, commander_list=[]):
         self.engine = engine
+        self.display = display
         self.root = tk.Tk()
         self.root.title("Controller")
         self.commander_list = commander_list
@@ -221,7 +224,19 @@ class Controller:
         self.commander_frame.pack()
 
     def start(self):
+        self.tick_ms = int(1000 / self.display.fps)
+        self.root.after(0, self.update)
         self.root.mainloop()
+
+    def update(self):
+        if self.display.running:
+            start_time = time.time()
+            self.display.update()
+            elapsed_time = time.time() - start_time
+            self.root.after(self.tick_ms - int(elapsed_time * 1000), self.update)
+
+    def register_tk_update_cb(self, cb):
+        self.tk_cb_list.append(cb)
 
     def add_commander(self, commander):
         self.commander_list.append(commander)

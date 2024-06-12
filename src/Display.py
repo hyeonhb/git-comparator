@@ -26,15 +26,13 @@ class Button:
 
 class Display:
     def __init__(self, engine, width, height, fps=60, name=""):
-        pygame.init()
         self.screen_width = width
         self.screen_height = height
         self.fps = fps
-        self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
-        pygame.display.set_caption(name)
         self.clock = pygame.time.Clock()
-        self.running = True
+        self.running = False
         self.engine = engine
+        self.name=name
 
         self.view_mode = True # True : Top View,  False : Side View
 
@@ -45,8 +43,6 @@ class Display:
             'Drone': self.load_image(resource_path, 'free-icon-camera-drone-5524149.png'),
             'RobotCar': self.load_image(resource_path, 'free-icon-camera-drone-5524149.png'),
         }
-
-        self.switch_view_button = Button(50, 20, 100, 50, 'Switch View', self.switch_view)
 
     def load_image(self, directory, fileName):
         image_path = os.path.join(directory, fileName)
@@ -71,6 +67,11 @@ class Display:
 
     def draw(self):
         for object in self.engine.get_object_list():
+            #object list를 제대로 못가져 오는 문제 존재
+            #왜 copy와 원본 리스트 간의 차이가 존재 하는지 확인이 필요함
+            if not object.config.tag in self.tag_images.keys():
+                return
+
             # image 그리기
             image = self.tag_images[object.config.tag]
             angle = math.degrees(object.orientation.y)
@@ -126,27 +127,34 @@ class Display:
                 self.draw_rotated_line(self.screen, (0, 0, 255), y_axis_start, y_axis_end, 0, center, 2)
 
     def start(self):
-        try:
-            while self.running:
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        return
-                    #버튼 클릭 이벤트
-                    elif event.type == pygame.MOUSEBUTTONDOWN:
-                        if self.switch_view_button.is_clicked(event.pos):
-                            self.switch_view_button.click()
-                
-                #start_time = time.time()
-                self.screen.fill((255, 255, 255))
+        pygame.init()
+        self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
+        pygame.display.set_caption(self.name)
+        self.switch_view_button = Button(50, 20, 100, 50, 'Switch View', self.switch_view)
+        self.running = True
 
-                self.draw()
-                self.switch_view_button.draw(self.screen)
+    def update(self):
+        if not self.running:
+            return
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.stop()
+                return
+            #버튼 클릭 이벤트
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if self.switch_view_button.is_clicked(event.pos):
+                    self.switch_view_button.click()
+        
+        #start_time = time.time()
+        self.screen.fill((255, 255, 255))
 
-                pygame.display.flip()
-                self.clock.tick(self.fps)
-                #print(time.time() - start_time)
-        finally:
-            pygame.quit()
+        self.draw()
+        self.switch_view_button.draw(self.screen)
+
+        pygame.display.flip()
+        #self.clock.tick(self.fps)
+        #print(time.time() - start_time)
 
     def stop(self):
         self.running = False
+        pygame.quit()

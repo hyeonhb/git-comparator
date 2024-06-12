@@ -11,6 +11,7 @@ from VirtualSimEngine import VirtualSimEngine
 from Controller import *
 from Swarm import Swarm
 from CommanderBird import CommanderBird
+from CommanderAnt import CommanderAnt
 
 if __name__ == '__main__':
     engine = VirtualSimEngine()
@@ -33,13 +34,14 @@ if __name__ == '__main__':
     swarm1.add_robot(drone2)
     swarm1.add_robot(drone3)
 
-    commander_bird = CommanderBird()
-    commander_bird.add_swarm(swarm1)
+    commander_ant = CommanderAnt(engine)
+    commander_ant.add_swarm(swarm1)
 
-    app = Controller(engine)
-    app.add_commander(commander_bird)
+    display = Display(engine, width=1024, height=768, name="SwamRobot Display")
+    display.start()
+
+    app = Controller(engine, display)
+    app.add_commander(commander_ant)
     app.start()
-    #display = Display(engine, width=1024, height=768, name="SwamRobot Display")
-    #display.start()
 
     engine.stop()
