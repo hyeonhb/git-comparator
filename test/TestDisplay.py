@@ -10,6 +10,7 @@ from Vector3D import Vector3D
 from VirtualSimEngine import VirtualSimEngine
 from Controller import *
 from Swarm import Swarm
+from CommanderBird import CommanderBird
 
 if __name__ == '__main__':
     engine = VirtualSimEngine()
@@ -32,10 +33,12 @@ if __name__ == '__main__':
     swarm1.add_robot(drone2)
     swarm1.add_robot(drone3)
 
-    root = tk.Tk()
-    app = VirtualSwarmPanel(root, swarm1, engine)
-    root.mainloop()
+    commander_bird = CommanderBird()
+    commander_bird.add_swarm(swarm1)
 
+    app = Controller(engine)
+    app.add_commander(commander_bird)
+    app.start()
     #display = Display(engine, width=1024, height=768, name="SwamRobot Display")
     #display.start()
 
