@@ -1,8 +1,6 @@
 from ICommander import ICommander
 from IVirtualObject import IVirtualObject
-from DummytAnt import DummyAnt
 import math
-import pygame
 from Vector3D import Vector3D
 
 # Flocking params
