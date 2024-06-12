@@ -56,7 +56,7 @@ class CommanderAnt(ICommander):
                         average_position += other.position
 
                     if distance < SEPARATION_DISTANCE:
-                        diff = self.position - other.position
+                        diff = current_boid.position - other.position
                         diff.scale_to_length(1 / distance)
 
                         average_separation += diff
