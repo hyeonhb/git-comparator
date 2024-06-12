@@ -1,3 +1,5 @@
+import math
+
 class Vector3D:
     def __init__(self, x=0.0, y=0.0, z=0.0):
         self.x = x
@@ -31,3 +33,9 @@ class Vector3D:
             self.y + (other.y - self.y) * t,
             self.z + (other.z - self.z) * t
         )
+
+    def scale_to_length(self, length):
+        org_length = math.sqrt(self.x**2 + self.y**2 + self.z**2)
+        if org_length == 0:
+            return Vector3D()
+        return self * (length / org_length)
