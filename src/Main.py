@@ -7,8 +7,8 @@ if __name__ == '__main__':
     engine.start()
 
     commander = CommanderAnt([])
-    next_position = commander.get_next_position_list()
-    print('!!! next_position:', next_position)
+    next_velocity = commander.get_next_velocity_list()
+    print('!!! next_velocity:', next_velocity)
 
     display = Display(engine, width=1024, height=768, name="SwamRobot Display")
     display.start()

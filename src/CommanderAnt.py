@@ -16,11 +16,11 @@ class CommanderAnt(ICommander):
             [DummyAnt(), DummyAnt(), DummyAnt(), DummyAnt(), DummyAnt(), DummyAnt(), DummyAnt()],
         ]
 
-    def get_next_position_list(self):
+    def get_next_velocity_list(self):
         result = []
 
         for swarm in self.swarm_list:
-            swram_position_list = []
+            swram_velocity_list = []
             for current_boid in swarm:
                 for other in swarm:
                     if other == current_boid:
@@ -54,9 +54,9 @@ class CommanderAnt(ICommander):
                 current_boid.velocity -= average_separation * 0.12
                 current_boid.velocity.scale_to_length(MAX_VELOCITY)
                 
-                swram_position_list.append(current_boid.velocity)
+                swram_velocity_list.append(current_boid.velocity)
             
-            result.append(swram_position_list)
+            result.append(swram_velocity_list)
         return result
 
     def get_distance_difference(self, current_boid, other):
