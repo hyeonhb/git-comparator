@@ -66,55 +66,59 @@ class Display:
 
     def draw(self):
         for object in self.engine.get_object_list():
-            #image 그리기
+            # image 그리기
             image = self.tag_images[object.config.tag]
             angle = math.degrees(object.orientation.y)
 
-            #y값에 따라 스케일 조정
-            scale_factor = 1.0015 ** object.position.y
-            
-            if self.view_mode: # Top view
+            # position을 간단히 변수로 사용
+            x = object.position.x
+            y = object.position.y
+            z = object.position.z
+
+            # y값에 따라 스케일 조정
+            scale_factor = 1.0015 ** y
+
+            if self.view_mode:  # Top view
                 scale_x = (object.config.width / image.get_width()) * scale_factor
                 scale_y = (object.config.depth / image.get_height()) * scale_factor
                 scale = (scale_x + scale_y) / 2  # 평균 비율 사용
                 image = pygame.transform.rotozoom(image, angle, scale)
-                rect = image.get_rect(center=(object.position.x, object.position.z))
+                rect = image.get_rect(center=(x, z))
                 pygame.draw.rect(self.screen, (0, 255, 0), rect, 1)
                 self.screen.blit(image, rect.topleft)
 
                 # 오브젝트의 좌표를 기준으로 Direction Line 그리기
                 self.line_length = 20
-                x_axis_start = (object.position.x, object.position.z)
-                x_axis_end = (object.position.x + self.line_length, object.position.z)
-                y_axis_start = (object.position.x, object.position.z)
-                y_axis_end = (object.position.x, object.position.z + self.line_length)
-                center = (object.position.x, object.position.z)
+                x_axis_start = (x, z)
+                x_axis_end = (x + self.line_length, z)
+                y_axis_start = (x, z)
+                y_axis_end = (x, z + self.line_length)
+                center = (x, z)
 
                 # 회전된 직선 그리기
                 self.draw_rotated_line(self.screen, (255, 0, 0), x_axis_start, x_axis_end, -object.orientation.y, center, 2)
                 self.draw_rotated_line(self.screen, (0, 0, 255), y_axis_start, y_axis_end, -object.orientation.y, center, 2)
-            
-            else: #Side view                
+
+            else:  # Side view
                 scale_x = (object.config.width / image.get_width())
                 scale_y = (object.config.height / image.get_height())
                 scale = (scale_x + scale_y) / 2  # 평균 비율 사용
                 image = pygame.transform.rotozoom(image, 0, scale)
-                rect = image.get_rect(center=(object.position.x, self.screen_height - object.position.y))
+                rect = image.get_rect(center=(x, self.screen_height - y))
                 pygame.draw.rect(self.screen, (0, 255, 0), rect, 1)
                 self.screen.blit(image, rect.topleft)
 
                 # 오브젝트의 좌표를 기준으로 Direction Line 그리기
                 self.line_length = 20
-                x_axis_start = (object.position.x, self.screen_height - object.position.y)
-                x_axis_end = (object.position.x + self.line_length, self.screen_height - object.position.y)
-                y_axis_start = (object.position.x, self.screen_height - object.position.y)
-                y_axis_end = (object.position.x, self.screen_height - object.position.y - self.line_length)
-                center = (object.position.x, self.screen_height - object.position.y)
+                x_axis_start = (x, self.screen_height - y)
+                x_axis_end = (x + self.line_length, self.screen_height - y)
+                y_axis_start = (x, self.screen_height - y)
+                y_axis_end = (x, self.screen_height - y - self.line_length)
+                center = (x, self.screen_height - y)
 
                 # 회전된 직선 그리기
                 self.draw_rotated_line(self.screen, (255, 0, 0), x_axis_start, x_axis_end, 0, center, 2)
                 self.draw_rotated_line(self.screen, (0, 0, 255), y_axis_start, y_axis_end, 0, center, 2)
-
 
     def start(self):
         try:
