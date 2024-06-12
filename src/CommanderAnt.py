@@ -10,13 +10,30 @@ SEPARATION_DISTANCE = 30
 
 class CommanderAnt(ICommander):
     def __init__(self, swarm_list):
+        self.is_running = False
         self.swarm_list = [
             [DummyAnt(), DummyAnt(), DummyAnt(), DummyAnt()],
             [DummyAnt(), DummyAnt()],
             [DummyAnt(), DummyAnt(), DummyAnt(), DummyAnt(), DummyAnt(), DummyAnt(), DummyAnt()],
         ]
 
+    def commander_start(self):
+        self.is_running = True
+
+    def commander_play(self):
+        self.is_running = True
+
+    def commander_pause(self):
+        self.is_running = False
+
+    def commander_stop(self):
+        self.swarm_list = [] # swarm_list 초기화
+        self.is_running = False
+
     def get_next_velocity_list(self):
+        if self.is_running == False:
+            return False
+
         result = []
 
         for swarm in self.swarm_list:
