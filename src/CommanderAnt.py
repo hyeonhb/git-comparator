@@ -1,6 +1,7 @@
+import math
+import random
 from ICommander import ICommander
 from IVirtualObject import IVirtualObject
-import math
 from Vector3D import Vector3D
 
 # Flocking params
@@ -12,6 +13,17 @@ class CommanderAnt(ICommander, IVirtualObject):
     def __init__(self, engine, swarm_list=[]):
         IVirtualObject.__init__(self, engine, "Commander")
         ICommander.__init__(self, swarm_list)
+
+        self.is_running = False
+
+    def commander_init(self):
+        print("Init Commander")
+
+        # 모든 Boid의 position을 랜덤 지정
+        for swarm in self.swarm_list:
+            for boid in swarm:
+                random_position = Vector3D(random.uniform(0, 1024), 0, random.uniform(0, 768))
+                boid.set_postion(random_position)
 
         self.is_running = False
 
