@@ -3,6 +3,7 @@ from IVirtualObject import IVirtualObject
 from DummytAnt import DummyAnt
 import math
 import pygame
+from Vector3D import Vector3D
 
 # Flocking params
 MAX_VELOCITY = 1.2
@@ -10,25 +11,26 @@ PERCEPTION_RADIUS = 50
 SEPARATION_DISTANCE = 30
 
 class CommanderAnt(ICommander, IVirtualObject):
-    def __init__(self, swarm_list):
+    def __init__(self, engine, swarm_list=[]):
+        IVirtualObject.__init__(self, engine, "Commander")
+        ICommander.__init__(self, swarm_list)
+
         self.is_running = False
-        self.swarm_list = [
-            [DummyAnt(), DummyAnt(), DummyAnt(), DummyAnt()],
-            [DummyAnt(), DummyAnt()],
-            [DummyAnt(), DummyAnt(), DummyAnt(), DummyAnt(), DummyAnt(), DummyAnt(), DummyAnt()],
-        ]
 
     def commander_start(self):
+        print("Start Commander")
         self.is_running = True
 
     def commander_play(self):
+        print("Play Commander")
         self.is_running = True
 
     def commander_pause(self):
+        print("Pause Commander")
         self.is_running = False
 
     def commander_stop(self):
-        self.swarm_list = [] # swarm_list 초기화
+        print("Stop Commander")
         self.is_running = False
 
     def final(self):
@@ -42,14 +44,15 @@ class CommanderAnt(ICommander, IVirtualObject):
 
         for swarm in self.swarm_list:
             swram_velocity_list = []
-            for current_boid in swarm:
-                for other in swarm:
+            robot_list = swarm.get_robot_list()
+            for current_boid in robot_list:
+                for other in robot_list:
                     if other == current_boid:
                         continue
                     
-                    average_velocity = pygame.Vector3(0, 0, 0)
-                    average_position = pygame.Vector3(0, 0, 0)
-                    average_separation = pygame.Vector3(0, 0, 0)
+                    average_velocity = Vector3D()
+                    average_position = Vector3D()
+                    average_separation = Vector3D()
                     neighbors_counter = 0
 
                     distance = self.get_distance_difference(current_boid, other)
@@ -79,8 +82,8 @@ class CommanderAnt(ICommander, IVirtualObject):
                 swram_velocity_list.append(next_velocity)
 
                 # 실제 Boid 위치 셋업
-                # current_boid.rotate(next_velocity)
-                # current_boid.move(next_velocity)
+                #current_boid.rotate(next_velocity)
+                current_boid.move(next_velocity)
             
             result.append(swram_velocity_list)
         return result
@@ -88,6 +91,6 @@ class CommanderAnt(ICommander, IVirtualObject):
     def get_distance_difference(self, current_boid, other):
         # 유클리디안 거리 (Euclidean Distance)
         # 거리차이 값에는 음수 개념이 없기 때문에 각 좌표 차이를 제곱해서 더해주고, 최종적으로는 제곱근 값을 리턴해준다.
-        position_diff = (current_boid.position[0] - other.position[0]) ** 2 + (current_boid.position[1] - other.position[1]) ** 2
+        position_diff = (current_boid.position.x - other.position.x) ** 2 + (current_boid.position.z - other.position.z) ** 2
         return math.sqrt(position_diff)
 
