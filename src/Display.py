@@ -88,7 +88,7 @@ class Display:
                 self.screen.blit(image, rect.topleft)
 
                 # 오브젝트의 좌표를 기준으로 Direction Line 그리기
-                self.line_length = 20
+                self.line_length = 20 * scale_factor
                 x_axis_start = (x, z)
                 x_axis_end = (x + self.line_length, z)
                 y_axis_start = (x, z)
