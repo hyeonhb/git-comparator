@@ -7,6 +7,7 @@ if __name__ == '__main__':
     engine.start()
 
     commander = CommanderAnt([])
+    commander.commander_start()
     next_velocity = commander.get_next_velocity_list()
     print('!!! next_velocity:', next_velocity)
 
