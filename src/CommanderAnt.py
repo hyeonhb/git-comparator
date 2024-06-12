@@ -1,4 +1,5 @@
 from ICommander import ICommander
+from IVirtualObject import IVirtualObject
 from DummytAnt import DummyAnt
 import math
 import pygame
@@ -8,7 +9,7 @@ MAX_VELOCITY = 1.2
 PERCEPTION_RADIUS = 50
 SEPARATION_DISTANCE = 30
 
-class CommanderAnt(ICommander):
+class CommanderAnt(ICommander, IVirtualObject):
     def __init__(self, swarm_list):
         self.is_running = False
         self.swarm_list = [
@@ -30,7 +31,10 @@ class CommanderAnt(ICommander):
         self.swarm_list = [] # swarm_list 초기화
         self.is_running = False
 
-    def get_next_velocity_list(self):
+    def final(self):
+        self.set_next_velocity()
+
+    def set_next_velocity(self):
         if self.is_running == False:
             return False
 
@@ -66,12 +70,17 @@ class CommanderAnt(ICommander):
                     average_position /= neighbors_counter
                     average_separation /= neighbors_counter
 
-                current_boid.velocity += average_velocity * 0.08
-                current_boid.velocity += average_position * 0.05
-                current_boid.velocity -= average_separation * 0.12
-                current_boid.velocity.scale_to_length(MAX_VELOCITY)
+                next_velocity = current_boid.velocity
+                next_velocity += average_velocity * 0.08
+                next_velocity += average_position * 0.05
+                next_velocity -= average_separation * 0.12
+                next_velocity.scale_to_length(MAX_VELOCITY)
                 
-                swram_velocity_list.append(current_boid.velocity)
+                swram_velocity_list.append(next_velocity)
+
+                # 실제 Boid 위치 셋업
+                # current_boid.rotate(next_velocity)
+                # current_boid.move(next_velocity)
             
             result.append(swram_velocity_list)
         return result
