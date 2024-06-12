@@ -104,9 +104,24 @@ class CommanderAnt(ICommander, IVirtualObject):
                 current_boid.set_orientation(next_velocity)
                 current_boid.move(next_velocity)
 
+                self.correct_position(current_boid, next_velocity)
+
     def get_distance_difference(self, current_boid, other):
         # 유클리디안 거리 (Euclidean Distance)
         # 거리차이 값에는 음수 개념이 없기 때문에 각 좌표 차이를 제곱해서 더해주고, 최종적으로는 제곱근 값을 리턴해준다.
         position_diff = (current_boid.position.x - other.position.x) ** 2 + (current_boid.position.z - other.position.z) ** 2
         return math.sqrt(position_diff)
+    
+    # 화면밖으로 나갈 경우, 반대편에서 등장하도록 포지션 보정
+    def correct_position(boid, next_velocity):
+        BOID_SIZE = 90
+        next_position = boid.position + next_velocity
 
+        if next_position.x < 0:
+            boid.position.x = 1024 - BOID_SIZE
+        if next_position.y < 0:
+            boid.position.y = 768 - BOID_SIZE
+        if next_position.x > 1024:
+            boid.position.x = BOID_SIZE
+        if next_position.y > 768:
+            boid.position.y = BOID_SIZE
