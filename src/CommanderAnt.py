@@ -119,9 +119,9 @@ class CommanderAnt(ICommander, IVirtualObject):
 
         if next_position.x < 0:
             boid.position.x = 1024 - BOID_SIZE
-        if next_position.y < 0:
-            boid.position.y = 768 - BOID_SIZE
+        if next_position.z < 0:
+            boid.position.z = 768 - BOID_SIZE
         if next_position.x > 1024:
             boid.position.x = BOID_SIZE
-        if next_position.y > 768:
-            boid.position.y = BOID_SIZE
+        if next_position.z > 768:
+            boid.position.z = BOID_SIZE
