@@ -1,5 +1,6 @@
 import math
 import pygame
+import os
 import time
 
 class Button:
@@ -37,14 +38,18 @@ class Display:
 
         self.view_mode = True # True : Top View,  False : Side View
 
+        # resource 폴더 경로 구하기
+        current_path = os.path.dirname(__file__)
+        resource_path = os.path.join(current_path, os.pardir, 'resource')
         self.tag_images = {
-            'Drone': self.load_image('.\\resource\\free-icon-camera-drone-5524149.png'),
-            'RobotCar': self.load_image('.\\resource\\free-icon-camera-drone-5524149.png'),
+            'Drone': self.load_image(resource_path, 'free-icon-camera-drone-5524149.png'),
+            'RobotCar': self.load_image(resource_path, 'free-icon-camera-drone-5524149.png'),
         }
 
         self.switch_view_button = Button(50, 20, 100, 50, 'Switch View', self.switch_view)
 
-    def load_image(self, image_path):
+    def load_image(self, directory, fileName):
+        image_path = os.path.join(directory, fileName)
         return pygame.transform.rotate(pygame.image.load(image_path), 90)
 
     def rotate_point(self, px, py, angle):
