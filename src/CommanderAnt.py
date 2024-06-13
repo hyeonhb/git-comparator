@@ -10,19 +10,25 @@ PERCEPTION_RADIUS = 50
 SEPARATION_DISTANCE = 30
 
 class CommanderAnt(ICommander, IVirtualObject):
-    def __init__(self, engine, swarm_list=[]):
+    def __init__(self, engine):
         IVirtualObject.__init__(self, engine, "Commander")
-        ICommander.__init__(self, swarm_list)
+        ICommander.__init__(self)
 
         self.is_running = False
+        self.border_pad = 30
+        self.border_start = Vector3D(x=-self.border_pad, z=-self.border_pad)
+        self.border_end = Vector3D(x=1024+self.border_pad, z=768+self.border_pad)
 
     def commander_init(self):
         print("Init Commander")
 
+        self.commander_stop()
         # 모든 Boid의 position을 랜덤 지정
         for swarm in self.swarm_list:
-            for boid in swarm:
-                random_position = Vector3D(random.uniform(0, 1024), 0, random.uniform(0, 768))
+            for boid in swarm.get_robot_list():
+                print(f"init {boid.name}")
+                random_position = Vector3D(x=random.uniform(self.border_start.x, self.border_end.x),
+                                            z=random.uniform(self.border_start.z, self.border_end.z))
                 boid.set_postion(random_position)
 
         self.is_running = False
@@ -32,8 +38,9 @@ class CommanderAnt(ICommander, IVirtualObject):
 
         # 모든 Boid의 velocity를 랜덤 지정
         for swarm in self.swarm_list:
-            for boid in swarm:
-                random_velocity = Vector3D(random.uniform(-1, 1), 0, random.uniform(-1, 1))
+            for boid in swarm.get_robot_list():
+                print(f"start {boid.name}")
+                random_velocity = Vector3D(x=random.uniform(-1, 1), z=random.uniform(-1, 1))
                 boid.move(random_velocity)
 
         self.is_running = True
@@ -51,9 +58,9 @@ class CommanderAnt(ICommander, IVirtualObject):
 
         # 모든 Boid를 정지
         for swarm in self.swarm_list:
-            for boid in swarm:
-                stop_velocity = Vector3D(0, 0, 0)
-                boid.move(stop_velocity)
+            for boid in swarm.get_robot_list():
+                print(f"stop {boid.name}")
+                boid.stop()
 
         self.is_running = False
 
@@ -85,7 +92,7 @@ class CommanderAnt(ICommander, IVirtualObject):
 
                     if distance < SEPARATION_DISTANCE:
                         diff = current_boid.position - other.position
-                        diff.scale_to_length(1 / distance)
+                        diff = diff.scale_to_length(1 / max(distance, 0.00000001))
 
                         average_separation += diff
 
@@ -98,21 +105,20 @@ class CommanderAnt(ICommander, IVirtualObject):
                 next_velocity += average_velocity * 0.08
                 next_velocity += average_position * 0.05
                 next_velocity -= average_separation * 0.12
-                next_velocity.scale_to_length(MAX_VELOCITY)
+                next_velocity = next_velocity.scale_to_length(MAX_VELOCITY)
 
                 # 실제 Boid 위치 셋업
                 angle_radians = math.atan2(next_velocity.z, next_velocity.x)  # 라디안 단위의 각도
-                current_boid.set_orientation(angle_radians)
-                current_boid.move(next_velocity)
-
-                self.correct_position(current_boid, next_velocity)
+                current_boid.set_orientation(Vector3D(y=angle_radians))
+                self.reflect_border(current_boid, next_velocity)
+                current_boid.move(next_velocity * self.engine.tick)
 
     def get_distance_difference(self, current_boid, other):
         # 유클리디안 거리 (Euclidean Distance)
         # 거리차이 값에는 음수 개념이 없기 때문에 각 좌표 차이를 제곱해서 더해주고, 최종적으로는 제곱근 값을 리턴해준다.
         position_diff = (current_boid.position.x - other.position.x) ** 2 + (current_boid.position.z - other.position.z) ** 2
         return math.sqrt(position_diff)
-    
+
     # 화면밖으로 나갈 경우, 반대편에서 등장하도록 포지션 보정
     def correct_position(boid, next_velocity):
         BOID_SIZE = 90
@@ -126,3 +132,10 @@ class CommanderAnt(ICommander, IVirtualObject):
             boid.position.x = BOID_SIZE
         if next_position.z > 768:
             boid.position.z = BOID_SIZE
+
+    # border에 충돌할 경우 방향을 전환
+    def reflect_border(self, boid, next_velocity):
+        if boid.position.x < self.border_start.x or boid.position.x > self.border_end.x:
+            next_velocity.x = -next_velocity.x
+        if boid.position.z < self.border_start.z or boid.position.z > self.border_end.z:
+            next_velocity.z = -next_velocity.z
