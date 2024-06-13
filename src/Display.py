@@ -3,27 +3,6 @@ import pygame
 import os
 from Vector3D import Vector3D
 
-class Button:
-    def __init__(self, x, y, w, h, text, callback):
-        self.rect = pygame.Rect(x, y, w, h)
-        self.text = text
-        self.callback = callback
-        self.font = pygame.font.Font(None, 36)
-        self.color = (0, 0, 0)
-        self.bg_color = (255, 255, 255)
-
-    def draw(self, screen):
-        pygame.draw.rect(screen, self.bg_color, self.rect)
-        text_surf = self.font.render(self.text, True, self.color)
-        screen.blit(text_surf, (self.rect.x + (self.rect.width - text_surf.get_width()) // 2,
-                                self.rect.y + (self.rect.height - text_surf.get_height()) // 2))
-
-    def is_clicked(self, pos):
-        return self.rect.collidepoint(pos)
-
-    def click(self):
-        self.callback()
-
 class Display:
     def __init__(self, engine, width, height, fps=60, name=""):
         self.screen_width = width
@@ -32,10 +11,8 @@ class Display:
         self.clock = pygame.time.Clock()
         self.running = False
         self.engine = engine
-        self.name=name
-                
+        self.name=name                
         self.camera_position = Vector3D(0, 500, 1000)
-
         self.view_mode = True # True : Top View,  False : Side View
 
         # resource 폴더 경로 구하기
@@ -144,7 +121,6 @@ class Display:
         pygame.init()
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
         pygame.display.set_caption(self.name)
-        self.switch_view_button = Button(50, 20, 100, 50, 'Switch View', self.switch_view)
         self.running = True
 
     def update(self):
@@ -153,18 +129,12 @@ class Display:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.stop()
-                return
-            #버튼 클릭 이벤트
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                if self.switch_view_button.is_clicked(event.pos):
-                    self.switch_view_button.click()
+                return            
         
         #start_time = time.time()
         self.screen.fill((255, 255, 255))
 
         self.draw()
-        self.switch_view_button.draw(self.screen)
-
         pygame.display.flip()
         #self.clock.tick(self.fps)
         #print(time.time() - start_time)

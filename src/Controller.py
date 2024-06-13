@@ -137,13 +137,13 @@ class VirtualCommanderPanel:
         self.tk_widgets["clear_btn"] = tk.Button(self.tk_widgets["btn_frame"], text="Clear Swarms", command=self.clear_swarms)
         self.tk_widgets["init_btn"] = tk.Button(self.tk_widgets["btn_frame"], text="Init Commander", command=self.init_commander)
         self.tk_widgets["start_btn"] = tk.Button(self.tk_widgets["btn_frame"], text="Start Commander", command=self.start_commeder)
-        self.tk_widgets["puase_btn"] = tk.Button(self.tk_widgets["btn_frame"], text="Puase Commander", command=self.puase_commander)
+        self.tk_widgets["pause_btn"] = tk.Button(self.tk_widgets["btn_frame"], text="Pause Commander", command=self.puase_commander)
         self.tk_widgets["play_btn"] = tk.Button(self.tk_widgets["btn_frame"], text="Play Commander", command=self.play_commander)
         self.tk_widgets["stop_btn"] = tk.Button(self.tk_widgets["btn_frame"], text="Stop Commander", command=self.stop_commander)
 
         self.tk_widgets["init_btn"].grid(row=1, column=0, columnspan=2, sticky="nsew")
         self.tk_widgets["start_btn"].grid(row=2, column=0, columnspan=2, sticky="nsew")
-        self.tk_widgets["puase_btn"].grid(row=3, column=0, columnspan=2, sticky="nsew")
+        self.tk_widgets["pause_btn"].grid(row=3, column=0, columnspan=2, sticky="nsew")
         self.tk_widgets["play_btn"].grid(row=4, column=0, columnspan=2, sticky="nsew")
         self.tk_widgets["stop_btn"].grid(row=5, column=0, columnspan=2, sticky="nsew")
         self.tk_widgets["swarm_btn"].grid(row=6, column=0, sticky="nsew")
@@ -211,10 +211,12 @@ class Controller:
         self.commander_list = commander_list
 
         self.engine_frame = tk.Frame(self.root)
-        self.puase_btn = tk.Button(self.engine_frame, text="Pause Engine", command=self.puase_engine)
+        self.pause_btn = tk.Button(self.engine_frame, text="Pause Engine", command=self.puase_engine)
         self.play_btn = tk.Button(self.engine_frame, text="Play Engine", command=self.play_engine)
-        self.puase_btn.pack()
+        self.switch_btn = tk.Button(self.engine_frame, text="Switch view", command=self.switch_view)
+        self.pause_btn.pack()
         self.play_btn.pack()
+        self.switch_btn.pack()
         self.engine_frame.pack()
 
         self.commander_frame = tk.Frame(self.root)
@@ -259,3 +261,6 @@ class Controller:
 
     def play_engine(self):
         self.engine.play()
+
+    def switch_view(self):
+        self.display.switch_view()
