@@ -42,14 +42,15 @@ class Display:
         current_path = os.path.dirname(__file__)
         resource_path = os.path.join(current_path, os.pardir, 'resource')
         self.tag_images = {
-            'Drone': self.load_image(resource_path, 'free-icon-camera-drone-5524149.png'),
-            'RobotCar': self.load_image(resource_path, 'free-icon-camera-drone-5524149.png'),
+            'Drone': self.load_image(resource_path, 'drone_top_view.png', 'drone_side_view.png'),            
+            #'RobotCar': self.load_image(resource_path, 'free-icon-camera-drone-5524149.png'),
         }
 
-    def load_image(self, directory, fileName):
-        image_path = os.path.join(directory, fileName)
-        return pygame.transform.rotate(pygame.image.load(image_path), 90)
-
+    def load_image(self, directory, top_view_file, side_view_file):
+        top_view_image = pygame.transform.rotate(pygame.image.load(os.path.join(directory, top_view_file)), 90)
+        side_view_image = pygame.image.load(os.path.join(directory, side_view_file))
+        return {'top': top_view_image, 'side': side_view_image}
+    
     def rotate_point(self, px, py, angle):
         new_x = px * math.cos(angle) - py * math.sin(angle)
         new_y = px * math.sin(angle) + py * math.cos(angle)
@@ -69,29 +70,26 @@ class Display:
 
     def calculate_perspective_scale(self, y):
         camera_y = self.camera_position.y
-        distance = camera_y - y
-        #perspective_scale = max(0.8, camera_y / (distance + camera_y))
-        perspective_scale = camera_y / (distance + camera_y)
+        distance = camera_y - y        
+        perspective_scale = camera_y / (distance + camera_y) + 0.5
         return perspective_scale
 
     def draw(self):
         for obj in self.engine.get_object_list():
             if not obj.config.tag in self.tag_images.keys():
-                continue
+                continue            
 
-            # image 그리기
-            image = self.tag_images[obj.config.tag]
             angle = math.degrees(obj.orientation.y)
-
             # position을 간단히 변수로 사용
             x = obj.position.x
             y = obj.position.y
             z = obj.position.z
-
             # y값에 따라 스케일 조정
             scale_factor = self.calculate_perspective_scale(y)
 
             if self.view_mode:  # Top view
+                # image 그리기
+                image = self.tag_images[obj.config.tag]['top']                
                 scale_x = (obj.config.width / image.get_width()) * scale_factor
                 scale_y = (obj.config.depth / image.get_height()) * scale_factor
                 scale = (scale_x + scale_y) / 2  # 평균 비율 사용
@@ -113,11 +111,16 @@ class Display:
                 self.draw_rotated_line(self.screen, (0, 0, 255), y_axis_start, y_axis_end, -obj.orientation.y, center, 2)
 
             else:  # Side view
-                scale_x = (obj.config.width / image.get_width())
-                scale_y = (obj.config.height / image.get_height())
+                # image 그리기
+                image = self.tag_images[obj.config.tag]['side']                
+                scale_x = (obj.config.width / image.get_width() * 3)
+                scale_y = (obj.config.height / image.get_height() * 3)
                 scale = (scale_x + scale_y) / 2  # 평균 비율 사용
                 image = pygame.transform.rotozoom(image, 0, scale)
-                rect = image.get_rect(center=(x, self.screen_height - y))
+
+                # y가 0일 때 이미지를 약간 위로 이동 (화면 끝에 걸쳐있어서 확인 불가)
+                y_offset = -20 if y == 0 else 0 
+                rect = image.get_rect(center=(x, self.screen_height - y + y_offset))
                 pygame.draw.rect(self.screen, (0, 255, 0), rect, 1)
                 self.screen.blit(image, rect.topleft)
 
