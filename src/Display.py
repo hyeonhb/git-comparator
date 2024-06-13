@@ -45,10 +45,9 @@ class Display:
     def switch_view(self):
         self.view_mode = not self.view_mode
 
-    def calculate_perspective_scale(self, y):
-        camera_y = self.camera_position.y
-        distance = camera_y - y        
-        perspective_scale = camera_y / (distance + camera_y)
+    def calculate_perspective_scale(self, x, camera):        
+        distance = camera - x        
+        perspective_scale = camera / (distance + camera)
         return perspective_scale
 
     def draw(self):
