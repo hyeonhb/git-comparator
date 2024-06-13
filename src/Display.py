@@ -1,7 +1,7 @@
 import math
 import pygame
 import os
-import time
+from Vector3D import Vector3D
 
 class Button:
     def __init__(self, x, y, w, h, text, callback):
@@ -33,6 +33,8 @@ class Display:
         self.running = False
         self.engine = engine
         self.name=name
+                
+        self.camera_position = Vector3D(0, 500, 1000)
 
         self.view_mode = True # True : Top View,  False : Side View
 
@@ -65,6 +67,12 @@ class Display:
     def switch_view(self):
         self.view_mode = not self.view_mode
 
+    def calculate_perspective_scale(self, y):
+        camera_y = self.camera_position[1]
+        distance = abs(camera_y - y)
+        perspective_scale = camera_y / (distance + camera_y)
+        return perspective_scale
+
     def draw(self):
         for obj in self.engine.get_object_list():
             if not obj.config.tag in self.tag_images.keys():
@@ -80,7 +88,7 @@ class Display:
             z = obj.position.z
 
             # y값에 따라 스케일 조정
-            scale_factor = 1.0015 ** y
+            scale_factor = self.calculate_perspective_scale(y)
 
             if self.view_mode:  # Top view
                 scale_x = (obj.config.width / image.get_width()) * scale_factor
