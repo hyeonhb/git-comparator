@@ -66,27 +66,27 @@ class Display:
         self.view_mode = not self.view_mode
 
     def draw(self):
-        for object in self.engine.get_object_list():
-            #object list를 제대로 못가져 오는 문제 존재
+        for obj in self.engine.get_object_list():
+            #obj list를 제대로 못가져 오는 문제 존재
             #왜 copy와 원본 리스트 간의 차이가 존재 하는지 확인이 필요함
-            if not object.config.tag in self.tag_images.keys():
+            if not obj.config.tag in self.tag_images.keys():
                 return
 
             # image 그리기
-            image = self.tag_images[object.config.tag]
-            angle = math.degrees(object.orientation.y)
+            image = self.tag_images[obj.config.tag]
+            angle = math.degrees(obj.orientation.y)
 
             # position을 간단히 변수로 사용
-            x = object.position.x
-            y = object.position.y
-            z = object.position.z
+            x = obj.position.x
+            y = obj.position.y
+            z = obj.position.z
 
             # y값에 따라 스케일 조정
             scale_factor = 1.0015 ** y
 
             if self.view_mode:  # Top view
-                scale_x = (object.config.width / image.get_width()) * scale_factor
-                scale_y = (object.config.depth / image.get_height()) * scale_factor
+                scale_x = (obj.config.width / image.get_width()) * scale_factor
+                scale_y = (obj.config.depth / image.get_height()) * scale_factor
                 scale = (scale_x + scale_y) / 2  # 평균 비율 사용
                 image = pygame.transform.rotozoom(image, angle, scale)
                 rect = image.get_rect(center=(x, z))
@@ -102,12 +102,12 @@ class Display:
                 center = (x, z)
 
                 # 회전된 직선 그리기
-                self.draw_rotated_line(self.screen, (255, 0, 0), x_axis_start, x_axis_end, -object.orientation.y, center, 2)
-                self.draw_rotated_line(self.screen, (0, 0, 255), y_axis_start, y_axis_end, -object.orientation.y, center, 2)
+                self.draw_rotated_line(self.screen, (255, 0, 0), x_axis_start, x_axis_end, -obj.orientation.y, center, 2)
+                self.draw_rotated_line(self.screen, (0, 0, 255), y_axis_start, y_axis_end, -obj.orientation.y, center, 2)
 
             else:  # Side view
-                scale_x = (object.config.width / image.get_width())
-                scale_y = (object.config.height / image.get_height())
+                scale_x = (obj.config.width / image.get_width())
+                scale_y = (obj.config.height / image.get_height())
                 scale = (scale_x + scale_y) / 2  # 평균 비율 사용
                 image = pygame.transform.rotozoom(image, 0, scale)
                 rect = image.get_rect(center=(x, self.screen_height - y))

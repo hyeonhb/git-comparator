@@ -9,7 +9,7 @@ class VirtualSimEngine:
         self.paused = False
         self.lock = threading.Lock()
         self.condition = threading.Condition()
-        self.object_list = [] #엔진에서 처리될 object list
+        self.object_list = [] #엔진에서 처리될 obj list
 
     def start(self):
         self.running = True
@@ -57,29 +57,29 @@ class VirtualSimEngine:
 
     def open_objects(self):
         with self.lock:
-            for object in self.object_list:
-                object.open()
+            for obj in self.object_list:
+                obj.open()
 
     def update_objects(self):
         with self.lock:
-            for object in self.object_list:
-                object.update()
+            for obj in self.object_list:
+                obj.update()
 
     def final_objects(self):
         with self.lock:
-            for object in self.object_list:
-                object.final()
+            for obj in self.object_list:
+                obj.final()
 
-    def register_object(self, object):
+    def register_object(self, obj):
         with self.lock:
-            self.object_list.append(object)
-            print(f"Registered object: {object, object.name}")
+            self.object_list.append(obj)
+            print(f"Registered obj: {obj, obj.name}")
 
-    def unregister_object(self, object):
+    def unregister_object(self, obj):
         with self.lock:
-            if object in self.object_list:
-                self.object_list.remove(object)
-                print(f"Unregistered object: {object, object.name}")
+            if obj in self.object_list:
+                self.object_list.remove(obj)
+                print(f"Unregistered obj: {obj, obj.name}")
 
     def get_object_list(self):
         with self.lock:
