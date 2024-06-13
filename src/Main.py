@@ -15,9 +15,19 @@ if __name__ == '__main__':
     display = Display(engine, width=1024, height=768, name="SwamRobot Display")
     display.start()
 
+    border_start = Vector3D(-display.screen_width / 2,
+                            -display.screen_height / 2,
+                            -display.screen_height / 2)
+
+    border_end = Vector3D(display.screen_width / 2,
+                            display.screen_height / 2,
+                            display.screen_height / 2)
+
+    border_pad = Vector3D(20, 20, 20)
+
     app = Controller(engine, display)
-    app.add_commander(CommanderAnt(engine))
-    app.add_commander(CommanderAnt(engine))
+    app.add_commander(CommanderAnt(engine, border_start, border_end, border_pad))
+    app.add_commander(CommanderBird(engine, border_start, border_end, border_pad))
     app.start()
 
     display.stop()

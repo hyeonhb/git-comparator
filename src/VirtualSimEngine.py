@@ -29,6 +29,8 @@ class VirtualSimEngine:
             print("engine resumed")
 
     def stop(self):
+        if self.paused:
+            self.play()
         self.running = False
         self.thread.join() 
         print("engine stop")

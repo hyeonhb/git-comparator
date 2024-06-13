@@ -20,13 +20,13 @@ if __name__ == '__main__':
 
     drone1 = Drone(engine, "Drone1")
     drone2 = Drone(engine, "Drone2", position=Vector3D(300, 0, 300))
-    drone3 = Drone(engine, "Drone2", position=Vector3D(500, 0, 500))
+    drone3 = Drone(engine, "Drone2", position=Vector3D(100, 0, 200))
 
     print(drone1.position)
     print(drone2.position)
 
-    drone1.move(Vector3D(100.0, 0.0, 100.0))
-    drone2.move(Vector3D(-50.0, 0.0, 100.0))
+    drone1.move(Vector3D(10.0, 0.0, 10.0))
+    drone2.move(Vector3D(-5.0, 0.0, -10.0))
 
     drone3.rotate(Vector3D(0.0, - (math.pi), 0.0))
 
