@@ -180,7 +180,7 @@ class Display:
         self.switch_view_button.draw(self.screen)
 
         pygame.display.flip()
-        # self.clock.tick(self.fps)
+        self.clock.tick(self.fps)
         # print(time.time() - start_time)
 
     def stop(self):
