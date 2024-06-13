@@ -102,13 +102,13 @@ class Display:
                 flip_image = False  # Top view에서는 반전 없음
                 scale_factor = self.calculate_perspective_scale(y)
                 if obj.config.tag == 'RobotCar':
-                    scale_factor += 3
+                    scale_factor += 5
                 elif obj.config.tag == 'Drone':
-                    scale_factor += 0.5
+                    scale_factor += 0.4
             else:  # Side view
                 angle = 0
                 flip_image = dx > 0  # 오른쪽으로 이동할 때 이미지를 반전
-                scale_factor = 4  # Side view에서는 고정된 scale factor 사용
+                scale_factor = 3  # Side view에서는 고정된 scale factor 사용
 
             # 캐시 키에 view mode와 flip 상태 포함
             cache_key = (obj.config.tag, angle, scale_factor, self.view_mode, flip_image)
