@@ -17,6 +17,7 @@ if __name__ == '__main__':
     engine = VirtualSimEngine()
     engine.start()
 
+
     drone1 = Drone(engine, "Drone1")
     drone2 = Drone(engine, "Drone2", position=Vector3D(300, 0, 300))
     drone3 = Drone(engine, "Drone2", position=Vector3D(500, 0, 500))
@@ -42,6 +43,8 @@ if __name__ == '__main__':
 
     app = Controller(engine, display)
     app.add_commander(commander_ant)
+    app.add_commander(CommanderAnt(engine))
     app.start()
 
+    display.stop()
     engine.stop()
