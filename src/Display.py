@@ -67,10 +67,8 @@ class Display:
 
     def draw(self):
         for obj in self.engine.get_object_list():
-            #obj list를 제대로 못가져 오는 문제 존재
-            #왜 copy와 원본 리스트 간의 차이가 존재 하는지 확인이 필요함
             if not obj.config.tag in self.tag_images.keys():
-                return
+                continue
 
             # image 그리기
             image = self.tag_images[obj.config.tag]
