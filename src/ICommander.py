@@ -1,6 +1,6 @@
 class ICommander:
-    def __init__(self, swarm_list=[]):
-        self.swarm_list = swarm_list
+    def __init__(self):
+        self.swarm_list = []
 
     def add_swarm(self, swarm):
         self.swarm_list.append(swarm)
