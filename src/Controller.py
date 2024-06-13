@@ -90,7 +90,7 @@ class VirtualSwarmPanel:
 
     def add_new_drone(self):
         name = "Drone" + str(len(self.swarm.get_robot_list()))
-        self.add_robot_to_swarm(Drone(self.engine, name, Vector3D(500, 0, 500)))
+        self.add_robot_to_swarm(Drone(self.engine, name))
 
     def add_new_rbcar(self):
         name = "RobotCar" + str(len(self.swarm.get_robot_list()))
@@ -170,7 +170,7 @@ class VirtualCommanderPanel:
         self.swarm_panel_list.append(VirtualSwarmPanel(self.tk_widgets["swarms_frame"], swarm, self.engine))
 
     def add_new_swarm(self):
-        self.add_swarm_control_panel(Swarm())
+        self.add_swarm_to_commander(Swarm())
 
     def init_commander(self):
         self.commander.commander_init()
