@@ -68,8 +68,9 @@ class Display:
         self.view_mode = not self.view_mode
 
     def calculate_perspective_scale(self, y):
-        camera_y = self.camera_position[1]
-        distance = abs(camera_y - y)
+        camera_y = self.camera_position.y
+        distance = camera_y - y
+        #perspective_scale = max(0.8, camera_y / (distance + camera_y))
         perspective_scale = camera_y / (distance + camera_y)
         return perspective_scale
 
