@@ -5,4 +5,4 @@ from VirtualSwarmRobot import VirtualSwarmRobot
 class Drone(VirtualSwarmRobot):
     def __init__(self, engine, name="", position=Vector3D(), orientation=Vector3D()):
         super().__init__(engine, name, position, orientation)
-        self.config = VirtualObjectConfig(width=30, height=3, depth=30, tag="Drone")
+        self.config = VirtualObjectConfig(width=24, height=12, depth=24, tag="Drone")
