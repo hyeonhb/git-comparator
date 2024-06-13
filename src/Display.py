@@ -43,7 +43,7 @@ class Display:
         resource_path = os.path.join(current_path, os.pardir, 'resource')
         self.tag_images = {
             'Drone': self.load_image(resource_path, 'drone_top_view.png', 'drone_side_view.png'),            
-            #'RobotCar': self.load_image(resource_path, 'free-icon-camera-drone-5524149.png'),
+            'RobotCar': self.load_image(resource_path, 'robotcar_top_view.png', 'robotcar_side_view.png')
         }
 
     def load_image(self, directory, top_view_file, side_view_file):
@@ -71,7 +71,7 @@ class Display:
     def calculate_perspective_scale(self, y):
         camera_y = self.camera_position.y
         distance = camera_y - y        
-        perspective_scale = camera_y / (distance + camera_y) + 0.5
+        perspective_scale = camera_y / (distance + camera_y)
         return perspective_scale
 
     def draw(self):
@@ -86,6 +86,8 @@ class Display:
             z = obj.position.z
             # y값에 따라 스케일 조정
             scale_factor = self.calculate_perspective_scale(y)
+            if obj.config.tag == 'RobotCar':
+                scale_factor += 5
 
             if self.view_mode:  # Top view
                 # image 그리기
