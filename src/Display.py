@@ -87,7 +87,9 @@ class Display:
             # y값에 따라 스케일 조정
             scale_factor = self.calculate_perspective_scale(y)
             if obj.config.tag == 'RobotCar':
-                scale_factor += 5
+                scale_factor += 3
+            elif obj.config.tag == "Drone":
+                scale_factor += 0.5
 
             if self.view_mode:  # Top view
                 # image 그리기
