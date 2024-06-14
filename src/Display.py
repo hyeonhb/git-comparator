@@ -109,6 +109,10 @@ class Display:
                 scale_x = (obj.config.width / image.get_width()) * scale_factor
                 image = pygame.transform.rotozoom(image, 0, scale_x)
 
+                if obj.config.tag == 'RobotCar':
+                    if obj.velocity.x > 0:
+                        image = pygame.transform.flip(image, True, False)
+
                 rect = image.get_rect(center=(x, self.transform_y(y)))
                 pygame.draw.rect(self.screen, (255, 255, 0), rect, 1)
                 self.screen.blit(image, rect.topleft)
