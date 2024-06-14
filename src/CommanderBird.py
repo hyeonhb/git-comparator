@@ -23,16 +23,17 @@ class CommanderBird(VirtualCommanderFlock):
                         continue
 
                     distance = self.get_distance_difference(current_boid, other)
-                    if distance < self.PERCEPTION_RADIUS:
-                        neighbors_counter += 1
-                        average_velocity += other.velocity
-                        average_position += other.position
-
-                    if distance < self.SEPARATION_DISTANCE:
+                    if distance == 0:
+                        continue
+                    elif distance < self.SEPARATION_DISTANCE:
                         close_counter += 1
                         diff = current_boid.position - other.position
-                        diff = diff.scale_to_length(1 / max(distance, 0.000001))
+                        diff = diff.scale_to_length((1 / max(distance, 0.000001))**2)
                         average_separation += diff
+                    elif distance < self.PERCEPTION_RADIUS:
+                        neighbors_counter += 1
+                        average_velocity += (other.velocity / self.engine.tick)
+                        average_position += other.position
 
                 if neighbors_counter > 0:
                     average_velocity /= neighbors_counter
@@ -44,11 +45,12 @@ class CommanderBird(VirtualCommanderFlock):
                 delta_velocity += average_velocity * 0.08
                 delta_velocity += average_position * 0.05
                 delta_velocity -= average_separation * 0.12
+                delta_velocity *= 2.0
 
-                next_velocity = current_boid.velocity + delta_velocity
+                next_velocity = (current_boid.velocity / self.engine.tick) + delta_velocity
                 next_velocity = next_velocity.scale_to_length(self.MAX_VELOCITY)
-                next_velocity *= self.engine.tick
                 next_velocity = self.reflect_border(current_boid, next_velocity)
+                next_velocity *= self.engine.tick
 
                 next_values.append((current_boid, next_velocity))
 

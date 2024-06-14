@@ -8,7 +8,8 @@ class VirtualCommanderFlock(ICommander, IVirtualObject):
     # Flocking params
     MAX_VELOCITY = 1.2
     PERCEPTION_RADIUS = 100
-    SEPARATION_DISTANCE = 30
+    SEPARATION_DISTANCE = 60
+    PAD_DISTNACE = 30
 
     def __init__(self, engine,
                  border_start=Vector3D(-500, -500, -500),
@@ -77,12 +78,24 @@ class VirtualCommanderFlock(ICommander, IVirtualObject):
 
     # border에 충돌할 경우 방향을 전환
     def reflect_border(self, boid, next_velocity):
-        if boid.position.x < self.border_start.x or boid.position.x > self.border_end.x:
-            next_velocity.x = -next_velocity.x
-        if boid.position.y < self.border_start.y or boid.position.y > self.border_end.y:
-            next_velocity.y = -next_velocity.y
-        if boid.position.z < self.border_start.z or boid.position.z > self.border_end.z:
-            next_velocity.z = -next_velocity.z
+
+        #if boid.position.x <= self.border_start.x or boid.position.x >= self.border_end.x:
+        #    next_velocity.x = -next_velocity.x
+        #if boid.position.y <= self.border_start.y or boid.position.y >= self.border_end.y:
+        #    next_velocity.y = -next_velocity.y
+        #if boid.position.z <= self.border_start.z or boid.position.z >= self.border_end.z:
+        #    next_velocity.z = -next_velocity.z
+
+        min_x = min(boid.position.x - self.border_start.x, self.border_end.x - boid.position.x)
+        min_y = min(boid.position.y - self.border_start.y, self.border_end.y - boid.position.y)
+        min_z = min(boid.position.z - self.border_start.z, self.border_end.z - boid.position.z)
+
+        if min_x < self.PAD_DISTNACE:
+            next_velocity.x += (self.PAD_DISTNACE - min_x) / self.PAD_DISTNACE * (1 if boid.position.x < (self.border_start.x + self.border_end.x) / 2 else -1)
+        if min_y < self.PAD_DISTNACE:
+            next_velocity.y += (self.PAD_DISTNACE - min_y) / self.PAD_DISTNACE * (1 if boid.position.y < (self.border_start.y + self.border_end.y) / 2 else -1)
+        if min_z < self.PAD_DISTNACE:
+            next_velocity.z += (self.PAD_DISTNACE - min_z) / self.PAD_DISTNACE * (1 if boid.position.z < (self.border_start.z + self.border_end.z) / 2 else -1)
 
         return next_velocity
 
