@@ -60,7 +60,7 @@ class Display:
     def calculate_perspective_scale(self, x, camera):        
         distance = camera - x
         perspective_scale = camera / (distance + camera)
-        return perspective_scale + 1
+        return perspective_scale + 0.1
 
     def transform_y(self, y):
         return self.screen_height - y

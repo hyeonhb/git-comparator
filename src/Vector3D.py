@@ -24,6 +24,12 @@ class Vector3D:
     def __mod__(self, other):
         return Vector3D(self.x % other, self.y % other, self.z % other)
 
+    def length(self):
+        return math.sqrt(self.x**2 + self.y**2 + self.z**2)
+
+    def dot(self, other):
+        return self.x * other.x + self.y * other.y + self.z * other.z
+
     def lerp(self, other, t):
         if not 0.0 <= t <= 1.0:
             raise ValueError("The interpolation factor t must be between 0.0 and 1.0")
@@ -35,7 +41,7 @@ class Vector3D:
         )
 
     def scale_to_length(self, length):
-        org_length = math.sqrt(self.x**2 + self.y**2 + self.z**2)
+        org_length = self.length()
         if org_length == 0:
             return Vector3D()
         return self * (length / org_length)

@@ -23,11 +23,9 @@ if __name__ == '__main__':
                             display.screen_height / 2,
                             display.screen_height / 2)
 
-    border_pad = Vector3D(20, 20, 20)
-
     app = Controller(engine, display)
-    app.add_commander(CommanderAnt(engine, border_start, border_end, border_pad))
-    app.add_commander(CommanderBird(engine, border_start, border_end, border_pad))
+    app.add_commander(CommanderAnt(engine, border_start, border_end))
+    app.add_commander(CommanderBird(engine, border_start, border_end))
     app.start()
 
     display.stop()
