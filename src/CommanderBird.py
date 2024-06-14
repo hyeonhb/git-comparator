@@ -28,7 +28,7 @@ class CommanderBird(VirtualCommanderFlock):
                     elif distance < self.SEPARATION_DISTANCE:
                         close_counter += 1
                         diff = current_boid.position - other.position
-                        diff = diff.scale_to_length((1 / max(distance, 0.000001))**2)
+                        diff = diff.scale_to_length(1 / distance)
                         average_separation += diff
                     elif distance < self.PERCEPTION_RADIUS:
                         neighbors_counter += 1
@@ -45,18 +45,17 @@ class CommanderBird(VirtualCommanderFlock):
                 delta_velocity += average_velocity * 0.08
                 delta_velocity += average_position * 0.05
                 delta_velocity -= average_separation * 0.12
-                delta_velocity *= 2.0
 
                 next_velocity = (current_boid.velocity / self.engine.tick) + delta_velocity
                 next_velocity = next_velocity.scale_to_length(self.MAX_VELOCITY)
-                next_velocity = self.reflect_border(current_boid, next_velocity)
                 next_velocity *= self.engine.tick
+                new_position = self.get_portal_posistion(current_boid)
+                next_values.append((current_boid, next_velocity, new_position))
 
-                next_values.append((current_boid, next_velocity))
-
-            for value in next_values: 
+            for value in next_values:
                 angle_radians = math.atan2(value[1].z, value[1].x)
                 value[0].set_orientation(Vector3D(y=angle_radians))
+                value[0].set_position(value[2])
                 value[0].move(value[1])
 
     def get_distance_difference(self, current_boid, other):

@@ -65,13 +65,13 @@ class CommanderAnt(VirtualCommanderFlock):
                 next_velocity.y = 0.0
                 next_velocity = next_velocity.scale_to_length(self.MAX_VELOCITY)
                 next_velocity *= self.engine.tick
-                next_velocity = self.reflect_border(current_boid, next_velocity)
+                new_position = self.get_portal_posistion(current_boid)
+                next_values.append((current_boid, next_velocity, new_position))
 
-                next_values.append((current_boid, next_velocity))
-
-            for value in next_values: 
+            for value in next_values:
                 angle_radians = math.atan2(value[1].z, value[1].x)
                 value[0].set_orientation(Vector3D(y=angle_radians))
+                value[0].set_position(value[2])
                 value[0].move(value[1])
 
     def get_distance_difference(self, current_boid, other):

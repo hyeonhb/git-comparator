@@ -17,7 +17,7 @@ class SwarmRobot(ISwarm):
         self.angular_velocity = Vector3D()
         self.velocity = Vector3D()
 
-    def set_postion(self, position):
+    def set_position(self, position):
         self.position = position
 
     def set_orientation(self, orientation):

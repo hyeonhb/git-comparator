@@ -11,6 +11,6 @@ class RobotCar(VirtualSwarmRobot):
         velocity.y = 0.0 #y축으로 이동할 수 없음(비행 X)
         return super().move(velocity)
 
-    def set_postion(self, position):
+    def set_position(self, position):
         position.y = 0.0 #y축 좌표를 지정할 수 없음(비행 x)
-        return super().set_postion(position)
+        return super().set_position(position)

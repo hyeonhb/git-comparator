@@ -7,9 +7,9 @@ from Vector3D import Vector3D
 class VirtualCommanderFlock(ICommander, IVirtualObject):
     # Flocking params
     MAX_VELOCITY = 1.2
-    PERCEPTION_RADIUS = 100
-    SEPARATION_DISTANCE = 60
-    PAD_DISTNACE = 30
+    PERCEPTION_RADIUS = 60
+    SEPARATION_DISTANCE = 35
+    PAD_DISTNACE = 40
 
     def __init__(self, engine,
                  border_start=Vector3D(-500, -500, -500),
@@ -34,7 +34,7 @@ class VirtualCommanderFlock(ICommander, IVirtualObject):
                 random_position = Vector3D(x=random.uniform(self.border_start.x, self.border_end.x),
                                             y=random.uniform(self.border_start.y, self.border_end.y),
                                             z=random.uniform(self.border_start.z, self.border_end.z))
-                boid.set_postion(random_position)
+                boid.set_position(random_position)
 
         self.is_running = False
 

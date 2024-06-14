@@ -7,8 +7,8 @@ class Display:
     def __init__(self, engine, width, height, fps=60, name=""):
         self.screen_width = width
         self.screen_height = height
-        self.origin_x = self.screen_width / 2
-        self.origin_y = self.screen_height / 2
+        self.origin_x = 30
+        self.origin_y = 30
         self.fps = fps
         self.clock = pygame.time.Clock()
         self.running = False
