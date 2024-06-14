@@ -66,7 +66,16 @@ class Display:
         return self.screen_height - y
 
     def draw(self):
-        for obj in self.engine.get_object_list():
+        object_list = self.engine.get_object_list()
+        
+        object_list = [obj for obj in self.engine.get_object_list() if hasattr(obj, 'position')]
+
+        if self.view_mode:
+            object_list.sort(key=lambda obj: obj.position.y, reverse=False)
+        else:
+            object_list.sort(key=lambda obj: obj.position.z, reverse=False)
+
+        for obj in object_list:
             if not obj.config.tag in self.tag_images.keys():
                 continue            
 
