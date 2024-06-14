@@ -4,6 +4,9 @@ from Vector3D import Vector3D
 from VirtualCommanderFlock import VirtualCommanderFlock
 
 class CommanderAnt(VirtualCommanderFlock):
+    def __init__(self, engine, border_start, border_end, border_pad=Vector3D()):
+        super().__init__(engine, border_start, border_end, border_pad, name="Commander Ant")
+
     def commander_start(self):
         print("Start Commander")
 

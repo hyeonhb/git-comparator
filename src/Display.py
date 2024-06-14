@@ -95,7 +95,7 @@ class Display:
                 scale = (scale_x + scale_y) / 2  # 평균 비율 사용
                 image = pygame.transform.rotozoom(image, angle, scale * scale_factor)
                 rect = image.get_rect(center=(x, self.transform_y(z)))
-                pygame.draw.rect(self.screen, (255, 255, 0), rect, 1)
+                #pygame.draw.rect(self.screen, (255, 255, 0), rect, 1)
                 self.screen.blit(image, rect.topleft)
 
                 # 오브젝트의 좌표를 기준으로 Direction Line 그리기
@@ -123,7 +123,7 @@ class Display:
                         image = pygame.transform.flip(image, True, False)
 
                 rect = image.get_rect(center=(x, self.transform_y(y)))
-                pygame.draw.rect(self.screen, (255, 255, 0), rect, 1)
+                #pygame.draw.rect(self.screen, (255, 255, 0), rect, 1)
                 self.screen.blit(image, rect.topleft)
 
                 # 오브젝트의 좌표를 기준으로 Direction Line 그리기

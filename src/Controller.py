@@ -133,6 +133,7 @@ class VirtualCommanderPanel:
 
         self.tk_widgets["btn_frame"] = tk.Frame(self.tk_widgets["frame"])
 
+        self.tk_widgets["name_label"] = tk.Label(self.tk_widgets["btn_frame"], text=self.commander.name, bg="white")
         self.tk_widgets["swarm_btn"] = tk.Button(self.tk_widgets["btn_frame"], text="Add Swarm", command=self.add_new_swarm)
         self.tk_widgets["clear_btn"] = tk.Button(self.tk_widgets["btn_frame"], text="Clear Swarms", command=self.clear_swarms)
         self.tk_widgets["init_btn"] = tk.Button(self.tk_widgets["btn_frame"], text="Init Commander", command=self.init_commander)
@@ -141,6 +142,7 @@ class VirtualCommanderPanel:
         self.tk_widgets["play_btn"] = tk.Button(self.tk_widgets["btn_frame"], text="Play Commander", command=self.play_commander)
         self.tk_widgets["stop_btn"] = tk.Button(self.tk_widgets["btn_frame"], text="Stop Commander", command=self.stop_commander)
 
+        self.tk_widgets["name_label"].grid(row=0, column=0, columnspan=2, sticky="nsew")
         self.tk_widgets["init_btn"].grid(row=1, column=0, columnspan=2, sticky="nsew")
         self.tk_widgets["start_btn"].grid(row=2, column=0, columnspan=2, sticky="nsew")
         self.tk_widgets["pause_btn"].grid(row=3, column=0, columnspan=2, sticky="nsew")
@@ -214,6 +216,7 @@ class Controller:
         self.pause_btn = tk.Button(self.engine_frame, text="Pause Engine", command=self.puase_engine)
         self.play_btn = tk.Button(self.engine_frame, text="Play Engine", command=self.play_engine)
         self.switch_btn = tk.Button(self.engine_frame, text="Switch view", command=self.switch_view)
+
         self.pause_btn.pack()
         self.play_btn.pack()
         self.switch_btn.pack()

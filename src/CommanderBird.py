@@ -4,6 +4,9 @@ from VirtualCommanderFlock import VirtualCommanderFlock
 
 
 class CommanderBird(VirtualCommanderFlock):
+    def __init__(self, engine, border_start, border_end, border_pad=Vector3D()):
+        super().__init__(engine, border_start, border_end, border_pad, name="Commander Bird")
+
     def set_next_velocity(self):
         if not self.is_running:
             return False
